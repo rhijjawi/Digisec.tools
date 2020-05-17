@@ -7,25 +7,18 @@ Outline VPN is a free and open-source tool that deploys Shadowsocks servers on m
 ```bash
 sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
 ```
-
 Launch OutlineVPN-Manager and paste the result into the "Add New Server" box
 
 ## Automation
 ### I created a script to automate the creation and emailing of private keys to customers
 ```python
-import smtplib 
-import requests 
-import json 
-import pyperclip 
-api_keynl = 'YourAPIKey'
-api_keyus = 'YourAPIKey'
-api_keyaus = 'YourAPIKey'
+api_keynl = 'YourAPIKey' #Replace your API key with the API key given to you by Outline-Manager || This key should be the Netherlands
+api_keyus = 'YourAPIKey' #Replace your API key with the API key given to you by Outline-Manager || This key should be the United States
+api_keyaus = 'YourAPIKey' #Replace your API key with the API key given to you by Outline-Manager || This key should be the Australia
 ```
 
 ## Contributions
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
