@@ -10,17 +10,19 @@ sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-
 
 Launch OutlineVPN-Manager and paste the result into the "Add New Server" box
 
-## Usage
-
+## Automation
+### I created a script to automate the creation and emailing of private keys to customers
 ```python
-import foobar
-
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
+import smtplib 
+import requests 
+import json 
+import pyperclip 
+api_keynl = 'YourAPIKey'
+api_keyus = 'YourAPIKey'
+api_keyaus = 'YourAPIKey'
 ```
 
-## Contributing
+## Contributions
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
