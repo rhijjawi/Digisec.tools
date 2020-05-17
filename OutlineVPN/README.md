@@ -10,7 +10,9 @@ sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-
 Launch OutlineVPN-Manager and paste the result into the "Add New Server" box
 
 ## Automation
-### I created a script to automate the creation and emailing of private keys to customers
+### I created a <a href="https://github.com/rhijjawi/Digisec.tools/blob/master/OutlineVPNKeygen.py">script</a> to automate the creation and emailing of private keys to customers
+To run the sript, install Python and it's IDE, then find the python program above.
+Open the python file in your favorite text editor, and replace the following lines with your servers API key.
 ```python
 api_keynl = 'YourAPIKey' #Replace your API key with the API key given to you by Outline-Manager || This key should be the Netherlands
 api_keyus = 'YourAPIKey' #Replace your API key with the API key given to you by Outline-Manager || This key should be the United States
