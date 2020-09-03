@@ -16,114 +16,116 @@ import ssl
 import urllib
 import os
 
-api_keynl = 'APIKEY1'
-api_keyus = 'APIKEY2'
-api_keyaus = 'APIKEY3'
-apikey1 = 'Dutch' #Freindly Name for first server, it will be used for SMTB library mail delivey as well. Change this if the country of the VPN changes.
-apikey2 = 'United States' #Freindly Name for second server.
-apikey3 = 'Australia' #Freindly Name for third server.
+api_key1 = 'APIKEY1' # Netherlands {countryid1}
+api_key2 = 'APIKEY2' # United States {countryid2}
+api_key3 = 'APIKEY3' # United Kingdom {countryid3}
+countryid1 = 'Netherlands' #Freindly Name for first server, it will be used for SMTB library mail delivey as well. Change this if the country of the VPN changes.
+countryid2 = 'United States' #Freindly Name for second server.
+countryid3 = 'United Kingdom' #Freindly Name for third server.
 
 choice = input(f"""
 What would you like to do
 [0] List all access keys
-[1] Create a server on the {apikey1} server
-[2] Create a server on the {apikey2} server
-[3] Create a server on the {apikey3} server
+[1] Create a server on the {countryid1} server
+[2] Create a server on the {countryid2} server
+[3] Create a server on the {countryid3} server
 [4] Create a server on All servers.
 [5] Quick-Create on ALL
 [6] Delete Key
+[7] Test SMTP
 """)
 if choice == "0": #This stupid python if statement you made doesn't query the third server. Fix when possible
-    responsenl = requests.get(f'{api_keynl}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
-    #responsenl.raise_for_status()
-    datanl = responsenl.json()
-    responseus = requests.get(f'{api_keyus}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
-    #responseus.raise_for_status()
-    dataus = responseus.json() #Tell python to set this data type to JSON.
-    keyus = dataus['accessKeys'] #Establish dictionary for specific server.
-    keynl = datanl['accessKeys'] #Establish dictionary for the other server.
-    print(f'{keyus}\n{keynl}') #Print all keys to console.
+    response1 = requests.get(f'{api_key1}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
+    response2 = requests.get(f'{api_key2}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
+    response3 = requests.get(f'{api_key3}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
+    response1.raise_for_status() #Display error when thrown so it isn't hidden
+    response2.raise_for_status() #Display error when thrown so it isn't hidden
+    response3.raise_for_status() #Display error when thrown so it isn't hidden
+    data1 = response1.json() #Tell python to set this data type to JSON.
+    data2 = response2.json() #Tell python to set this data type to JSON.
+    data3 = response3.json() #Tell python to set this data type to JSON.
+    key1 = data1['accessKeys'] #Establish dictionary for the other server.
+    key2 = data2['accessKeys'] #Establish dictionary for specific server.
+    key3 = data3['accessKeys'] #Establish dictionary for the third server.
+    print(f'\n{countryid1}\n{key1}\n\n\n\n\n{countryid2}\n{key2}\n\n\n\n\n{countryid3}\n{key3}') #Print all keys to console.
     exit() #Quit program when done
-if choice == "1": #Create a server on the {apikey1} server
-    keynl = f'You did not request an access key for the {apikey1} VPN, if you believe this is an error, please reply to this email.' #Set VPN to null as client did not request key for this specific server
-    keyaus = f'You did not request an access key for the {apikey3} VPN, if you believe this is an error, please reply to this email.'
-    print("Please wait") #Please wait
-    responseus = requests.post(str(api_keyus)+'/access-keys',verify=False)
-    print(f'Successfully added new key to {apikey2} servers.')
-    responseus.raise_for_status() #Raise error if error is returned
-    dataus = responseus.json()
-    print(dataus)
-    keyus = dataus['accessUrl']
-    print(keyus)
-    idus = dataus['id']
-    print(idus)
-if choice == "2": #Create a server on the {apikey2} server
-    keyus = f'You did not request an access key for the {apikey2} VPN, if you believe this is an error, please reply to this email.'
-    keyaus = f'You did not request an access key for the {apikey3} VPN, if you believe this is an error, please reply to this email.'
-    responsenl = requests.post((f'{api_keynl}/access-keys'),verify=False)
-    print("Successfully added new key to Dutch servers.")
-    responsenl.raise_for_status()
-    datanl = responsenl.json()
-    print(datanl)
-    keynl = datanl['accessKeys']
-    idnl = datanl['accessUrl']['id']
-    print(idnl)
-    print(f'{keyus}\n{keynl}')
-if choice == "3": #Create a server on the {apikey3} server
-    keyus = 'You did not request an access key for the American VPN, if you believe this is an error, please reply to this email.'
-    keynl = 'You did not request an access key for the Dutch VPN, if you believe this is an error, please reply to this email.'
-    responseaus = requests.post((f'{api_keyaus}/access-keys'),verify=False)
+if choice == "1": #Create a server on the Netherlands server
+    key2 = f'You did not request an access key for the {countryid2} VPN, if you believe this is an error, please reply to this email.' #Set VPN to null as client did not request key for this specific server
+    key3 = f'You did not request an access key for the {countryid3} VPN, if you believe this is an error, please reply to this email.'
+    print(f'Please wait, creating a VPN key for {countryid1}.') #Please wait
+    response1 = requests.post(str(api_key1)+'/access-keys',verify=False)
+    print(f'Successfully added new key to {countryid1} servers.')
+    response1.raise_for_status() #Raise error if error is returned
+    data1 = response1.json()
+    key1 = data1['accessUrl']
+    id1 = data1['id']
+    print(f'User Key:{key1}\nUser ID:{id1}')
+if choice == "2": #Create a server on the United States server
+    key1 = f'You did not request an access key for the {countryid1} VPN, if you believe this is an error, please reply to this email.'
+    key3 = f'You did not request an access key for the {countryid3} VPN, if you believe this is an error, please reply to this email.'
+    response2 = requests.post((f'{api_key2}/access-keys'),verify=False)
+    print(f'Successfully added new key to {countryid2} servers.')
+    response2.raise_for_status()
+    data2 = response2.json()
+    print(data2)
+    key2 = data2['accessKeys']
+    id2 = data2['accessUrl']['id']
+    print(id2)
+    print(f'{key2}\n{key1}')
+if choice == "3": #Create a server on the British server
+    key2 = 'You did not request an access key for the American VPN, if you believe this is an error, please reply to this email.'
+    key1 = 'You did not request an access key for the Dutch VPN, if you believe this is an error, please reply to this email.'
+    responseaus = requests.post((f'{api_key3}/access-keys'),verify=False)
     print("Successfully added new key to Aussie servers.")
     responseaus.raise_for_status()
-    dataaus = responseaus.json()
-    print(dataaus)
-    keyaus = dataaus['accessKeys'][0]['accessUrl']
-    idaus = dataaus['accessUrl']['id']
-    print(idnl)
-    print(f'{apikey3} Key:{keyaus}\n {apikey2} Key:{keyus}\n {apikey1} Keys:{keynl}')
-if choice == "4": #
-    responseus = requests.post((f'{api_keyus}/access-keys'),verify=False)
-    responseus.raise_for_status()
-    dataus = responseus.json()
-    responsenl = requests.post((f'{api_keynl}/access-keys'),verify=False)
-    responsenl.raise_for_status()
-    datanl = responsenl.json()
-    responseaus = requests.post((f'{api_keyaus}/access-keys'),verify=False)
-    responseaus.raise_for_status()
-    dataaus = responseaus.json()
-    print(f'Successfully added new key to all servers.\n{dataus}\n{datanl}\n{dataaus}')
-    keyus = dataus['accessUrl']
-    keynl = datanl['accessUrl']
-    keyaus = dataaus['accessUrl']
-    idus = dataus['id']
-    idnl = datanl['id']
-    idaus = dataaus['id']
-    print(f'US KEY:{keyus}\n DUTCH KEY:{keynl}\n AUSSIE KEY: {keyaus}')
-if choice == "5":
+    data3 = responseaus.json()
+    print(data3)
+    key3 = data3['accessKeys'][0]['accessUrl']
+    id3 = data3['accessUrl']['id']
+    print(id1)
+    print(f'{countryid1} Key:{key1}\n {countryid2} Key:{key2}\n {countryid3} Keys:{key3}')
+if choice == "4": #Create key for all servers (MAIN COMMAND)
+    reponse1 = requests.post((f'{api_key1}/access-keys'),verify=False)
+    response2 = requests.post((f'{api_key2}/access-keys'),verify=False)
+    reponse3 = requests.post((f'{api_key3}/access-keys'),verify=False)
+    response1.raise_for_status()
+    response2.raise_for_status()
+    response3.raise_for_status()
+    data1 = response1.json()
+    data2 = response2.json()
+    data3 = response3.json()
+    print(f'Successfully added new key to all servers.\n{data1}\n{data2}\n{data3}')
+    key1 = data1['accessUrl']
+    key2 = data2['accessUrl']
+    key3 = data3['accessUrl']
+    id1 = data1['id']
+    id2 = data2['id']
+    id3 = data3['id']
+    print(f'{countryid1} KEY:{key1} ID:{id1}\n {countryid2} KEY:{key2} ID:{id2}\n {countryid3} KEY: {key3} ID:{id3}')
+if choice == "5":#Quick Create on all servers
     email = input("Enter recipient's email:")
     name = email
-    responseus = requests.post((f'{api_keyus}/access-keys'),verify=False)
-    responseus.raise_for_status()
-    dataus = responseus.json()
-    responsenl = requests.post((f'{api_keynl}/access-keys'),verify=False)
-    responsenl.raise_for_status()
-    datanl = responsenl.json()
-    responseaus = requests.post((f'{api_keyaus}/access-keys'),verify=False)
-    responseaus.raise_for_status()
-    dataaus = responseaus.json()
+    response1 = requests.post((f'{api_key1}/access-keys'),verify=False)
+    response2 = requests.post((f'{api_key2}/access-keys'),verify=False)
+    response3 = requests.post((f'{api_key3}/access-keys'),verify=False)
+    response1.raise_for_status()
+    response2.raise_for_status()
+    response3.raise_for_status()
+    data1 = response1.json()
+    data2 = response2.json()
+    data3 = response3.json()
     print("Successfully added new key to all servers.")
     print("\n")
-    print(dataus)
-    print(datanl)
-    print(dataaus)
-    keyus = dataus['accessUrl']
-    keynl = datanl['accessUrl']
-    keyaus = dataaus['accessUrl']
-    idus = dataus['id']
-    idnl = datanl['id']
-    idaus = dataaus['id']
-    print(f'US KEY:{apikey2}\n DUTCH KEY:{apikey1}\n{apikey3} KEY: {keyaus}')
-
+    print(data2)
+    print(data1)
+    print(data3)
+    key2 = data2['accessUrl']
+    key1 = data1['accessUrl']
+    key3 = data3['accessUrl']
+    id2 = data2['id']
+    id1 = data1['id']
+    id3 = data3['id']
+    print(f'{countryid1} KEY:{key1} ID:{id1}\n{countryid2} KEY:{key2} ID:{id2}\n{countryid3} KEY: {key3} ID:{id3}')
     receivers = email
     sender = '*@gmail.com'
     gmail_pass = '*'
@@ -134,9 +136,9 @@ Subject: Your VPN keys have arrived!
 To avoid issues, I recommend you install Outline VPN Client, which is a client specifically made for the VPN server's infrastructure.
 """
     message += 'Your VPN keys:' + '\n'
-    message += f'{apikey2}:\n{keyus}\n'
-    message += 'NL:' + '\n' + str(keynl) + '\n'
-    message += 'AUS:' + '\n' + str(keyaus) + '\n'
+    message += f'{countryid2}:\n{key2}\n'
+    message += f'{api_key1}\n{key1}\n'
+    message += f'{api_key3}\n{key3}\n'
     try:
        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
        smtpObj.ehlo()
@@ -148,26 +150,26 @@ To avoid issues, I recommend you install Outline VPN Client, which is a client s
        print("Successfully sent email")
     except SMTPException:
        print("Error: unable to send email")
-    responseus = requests.put(f'{api_keyus}/access-keys/{idus}/name', data = {'name':f'{email}'}, verify=False)
-    responsenl = requests.put(f'{api_keynl}/access-keys/{idnl}/name', data = {'name':f'{email}'}, verify=False)
-    responseaus = requests.put(f'{api_keyaus}/access-keys/{idaus}/name', data = {'name':f'{email}'}, verify=False)
+    responseus = requests.put(f'{api_key2}/access-keys/{id2}/name', data = {'name':f'{email}'}, verify=False)
+    responsenl = requests.put(f'{api_key1}/access-keys/{id1}/name', data = {'name':f'{email}'}, verify=False)
+    responseaus = requests.put(f'{api_key3}/access-keys/{id3}/name', data = {'name':f'{email}'}, verify=False)
     exit()
 if choice == "6": #Create a delete request for a certain key from the database.
-    #responsenl = requests.get(f'{api_keynl}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
-    #responsenl.raise_for_status()
-    #datanl = responsenl.json()
-    responseus = requests.get(f'{api_keyus}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
+    responsenl = requests.get(f'{api_key1}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
+    responsenl.raise_for_status()
+    data1 = responsenl.json()
+    responseus = requests.get(f'{api_key2}/access-keys',verify=False) #Get list of access keys on the server. Do not verify SSL certificate
     responseus.raise_for_status()
-    dataus = responseus.json()
-    keyus = dataus['accessKeys']
-    #keynl = datanl['accessKeys']
-    print(f'{apikey2} Keys: {keyus}\n\n\n{apikey1} Keys: keynl')
+    data2 = responseus.json()
+    key2 = data2['accessKeys']
+    key1 = data1['accessKeys']
+    print(f'{countryid2} Keys: {key2}\n\n\n{countryid1} Keys: {key1}')
     deletewhich = input("""
-    Which keys whould you like to delete? (This option will result in the removal of the keys from all servers, not just one. To remove one key from one server database, please use Outline Manager.)
+Which keys whould you like to delete? (This option will result in the removal of the keys from all servers, not just one. To remove one key from one server database, please use Outline Manager.)
     [Enter Key ID]
     """)
-    responseus = requests.delete(f'{api_keyus}/access-keys/{deletewhich}',verify=False)
-    responsenl = requests.delete(f'{api_keynl}/access-keys/{deletewhich}',verify=False)
+    responseus = requests.delete(f'{api_key2}/access-keys/{deletewhich}',verify=False)
+    responsenl = requests.delete(f'{api_key1}/access-keys/{deletewhich}',verify=False)
 
 if choice != "6":
     whatnext = input("""
@@ -185,8 +187,8 @@ if choice != "6":
         }
     if whatnext == "0": #[0] Send key via email?
         receivers = email
-        sender = 'ramzihijjawi@gmail.com'
-        gmail_pass = 'iijzjmeywyhpiihf'
+        sender = '*@gmail.com'
+        gmail_pass = '*'
         message = """From: OutlineVPNissuer <OutlineVPNissuer@digisec.tools>
     To: OutlineVPNUser <(OutlineUser@digisec.tools)>
     Subject: Your VPN keys have arrived!
@@ -194,9 +196,7 @@ if choice != "6":
     To avoid issues, I recommend you install Outline VPN Client, which is a client specifically made for the VPN server's infrastructure.
     """
         message += 'Your VPN keys:' + '\n'
-        message += 'US:' + '\n' + str(keyus) + '\n'
-        message += 'NL:' + '\n' + str(keynl) + '\n'
-        message += 'AUS:' + '\n' + str(keyaus) + '\n'
+        message += f'{countryid1} key: {key1}\n{countryid2} key: {key2}\n{countryid3} key: {key3}'
         try:
             smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
             smtpObj.ehlo()
@@ -209,32 +209,32 @@ if choice != "6":
         except SMTPException:
             print("Error: unable to send email")
         if choice == "1": #US
-            responseus = requests.put(f'{api_keyus}/access-keys/{idus}/name', data = {'name':f'{email}'}, verify=False)
+            responseus = requests.put(f'{api_key2}/access-keys/{id2}/name', data = {'name':f'{email}'}, verify=False)
         if choice == "2": #NL
-            responsenl = requests.put(f'{api_keynl}/access-keys/{idnl}/name', data = {'name':f'{email}'}, verify=False)
+            responsenl = requests.put(f'{api_key1}/access-keys/{id1}/name', data = {'name':f'{email}'}, verify=False)
         if choice == "3": #AUSSIE
-            responseaus = requests.put(f'{api_keyaus}/access-keys/{idaus}/name', data = {'name':f'{email}'}, verify=False)
+            responseaus = requests.put(f'{api_key3}/access-keys/{id3}/name', data = {'name':f'{email}'}, verify=False)
         if choice == "4": #ALL KEYS
-            responseus = requests.put(f'{api_keyus}/access-keys/{idus}/name', data = {'name':f'{email}'}, verify=False)
-            responsenl = requests.put(f'{api_keynl}/access-keys/{idnl}/name', data = {'name':f'{email}'}, verify=False)
-            responseaus = requests.put(f'{api_keyaus}/access-keys/{idaus}/name', data = {'name':f'{email}'}, verify=False)
+            responseus = requests.put(f'{api_key2}/access-keys/{id2}/name', data = {'name':f'{email}'}, verify=False)
+            responsenl = requests.put(f'{api_key1}/access-keys/{id1}/name', data = {'name':f'{email}'}, verify=False)
+            responseaus = requests.put(f'{api_key3}/access-keys/{id3}/name', data = {'name':f'{email}'}, verify=False)
 
     if whatnext == "1": #[1] Copy key to clipboard
         pyperclip.copy(finalkeystosend)
-        #responseus = requests.put((f'{api_keyus}/access-keys/{idus}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
-        #responsenl = requests.put((f'{api_keynl}/access-keys/{idnl}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
-        responseus = requests.put(f'{api_keyus}/access-keys/{idus}/name', data = {'name':f'{email}'}, verify=False)
-        responsenl = requests.put(f'{api_keynl}/access-keys/{idnl}/name', data = {'name':f'{email}'}, verify=False)
-        responseaus = requests.put(f'{api_keyaus}/access-keys/{idaus}/name', data = {'name':f'{email}'}, verify=False)
+        #responseus = requests.put((f'{api_key2}/access-keys/{id2}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
+        #responsenl = requests.put((f'{api_key1}/access-keys/{id1}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
+        response2 = requests.put(f'{api_key2}/access-keys/{id2}/name', data = {'name':f'{email}'}, verify=False)
+        response1 = requests.put(f'{api_key1}/access-keys/{id1}/name', data = {'name':f'{email}'}, verify=False)
+        response3 = requests.put(f'{api_key3}/access-keys/{id3}/name', data = {'name':f'{email}'}, verify=False)
     if whatnext == "2": #[2] Just rename the US key
-        #responseus = requests.put((f'{api_keyus}/access-keys/{idus}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
-        responseus = requests.put(f'{api_keyus}/access-keys/{idus}/name', data = {'name':f'{email}'}, verify=False)
+        #responseus = requests.put((f'{api_key2}/access-keys/{id2}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
+        response2 = requests.put(f'{api_key2}/access-keys/{id2}/name', data = {'name':f'{email}'}, verify=False)
     if whatnext == "3": #[3] Just rename the NL key
-        #responsenl = requests.put((f'{api_keynl}/access-keys/{idnl}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
-        responsenl = requests.put(f'{api_keynl}/access-keys/{idnl}/name', data = {'name':f'{email}'}, verify=False)
+        #responsenl = requests.put((f'{api_key1}/access-keys/{id1}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
+        response1 = requests.put(f'{api_key1}/access-keys/{id1}/name', data = {'name':f'{email}'}, verify=False)
     if whatnext == "4":
-        #responseaus = requests.put((f'{api_keyaus}/access-keys/{idaus}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
-        responseaus = requests.put(f'{api_keyaus}/access-keys/{idaus}/name', data = {'name':f'{email}'}, verify=False)
+        #responseaus = requests.put((f'{api_key3}/access-keys/{id3}/{name}'),verify=False) THIS IS OLD CODE, USE THIS TO RECOVER PREVIOUS WORK
+        response3 = requests.put(f'{api_key3}/access-keys/{id3}/name', data = {'name':f'{email}'}, verify=False)
 #MIT License - DO NOT MODIFY
 
 #Copyright (c) [2020] [Ramzi Hijjawi]
