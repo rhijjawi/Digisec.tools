@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Welcome to my custom Python script! I designed this for my MYP Grade 10 Personal Project
+# 
 #
 #
 #
